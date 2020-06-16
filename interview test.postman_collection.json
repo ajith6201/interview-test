@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "1224fa48-d098-4195-bcfb-7a40da8df67d",
+		"name": "interview test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/awards?awards=40",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/awards?awards=40",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"awards"
+					],
+					"query": [
+						{
+							"key": "awards",
+							"value": "40"
+						}
+					]
+				},
+				"description": "api which accepts n, where n is number of awards"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/award_year?year=2003",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/award_year?year=2003",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"award_year"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2003"
+						}
+					]
+				},
+				"description": "api which accepts y, where y is number"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/total_details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/total_details",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"total_details"
+					]
+				},
+				"description": "api to fetch total number of books sold and total profit by each author."
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/birthdate?date=1991-12-09T05:00:00.000Z&price=3000",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/birthdate?date=1991-12-09T05:00:00.000Z&price=3000",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"birthdate"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "1991-12-09T05:00:00.000Z"
+						},
+						{
+							"key": "price",
+							"value": "3000"
+						}
+					]
+				},
+				"description": "api which accepts parameter birthDate and totalPrice, where birthDate is\ndate string and totalPrice is number."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

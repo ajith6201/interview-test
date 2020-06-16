@@ -1,0 +1,73 @@
+[{
+  "_id": {
+    "$oid": "5ee7b539038d6981cd3cb80e"
+  },
+  "author_name": "james",
+  "awards": 10,
+  "books_sold": 150,
+  "price": 2000,
+  "birthdate": {
+    "$date": "1990-11-28T04:03:30Z"
+  },
+  "award_year": 2000
+},{
+  "_id": {
+    "$oid": "5ee7b549038d6981cd3cb80f"
+  },
+  "author_name": "david",
+  "awards": 50,
+  "books_sold": 150,
+  "price": 2000,
+  "birthdate": {
+    "$date": "1995-12-26T04:00:00Z"
+  },
+  "award_year": 2001
+},{
+  "_id": {
+    "$oid": "5ee7b555038d6981cd3cb810"
+  },
+  "author_name": "anna",
+  "awards": 26,
+  "books_sold": 150,
+  "price": 3000,
+  "birthdate": {
+    "$date": "2000-12-26T04:00:00Z"
+  },
+  "award_year": 2012
+},{
+  "_id": {
+    "$oid": "5ee7b564038d6981cd3cb811"
+  },
+  "author_name": "white",
+  "awards": 47,
+  "books_sold": 150,
+  "price": 5000,
+  "birthdate": {
+    "$date": "1989-12-26T04:00:00Z"
+  },
+  "award_year": 1995
+},{
+  "_id": {
+    "$oid": "5ee7bd78038d6981cd3cb812"
+  },
+  "author_name": "white",
+  "awards": 47,
+  "books_sold": 200,
+  "price": 2000,
+  "birthdate": {
+    "$date": "1991-12-26T04:00:00Z"
+  },
+  "award_year": 1999
+},{
+  "_id": {
+    "$oid": "5ee7bdd6038d6981cd3cb813"
+  },
+  "author_name": "david",
+  "awards": 47,
+  "books_sold": 200,
+  "price": 2000,
+  "birthdate": {
+    "$date": "1994-12-26T04:00:00Z"
+  },
+  "award_year": 2003
+}]

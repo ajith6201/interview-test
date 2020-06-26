@@ -7,18 +7,20 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 
-  var connectionString = 'mongodb://127.0.0.1:27017/test1';
+  var connectionString = 'mongodb://127.0.0.1:27017';
 
   MongoClient.connect(connectionString, { useUnifiedTopology: true })
   .then(client => {
     console.log('Connected to Database')
-    const db = client.db('test1');
+    const db = client.db('sample');
 
     const collection = db.collection('authors');
+    
+    const collection_book = db.collection('books');
 
     app.get('/awards', (req, res) => {
-        var value = parseInt(req.query.awards); console.log(value);
-        collection.find({awards : {$gte : value}}).toArray(function(err, docs) {
+        var value = parseInt(req.query.awards); 
+        collection.find({awards : {$exists:true}, $where:'this.awards.length>='+value}).toArray(function(err, docs) {
             if(err)
             {
                 res.status(400).json(err);
@@ -30,7 +32,7 @@ const MongoClient = require('mongodb').MongoClient;
 
     app.get('/award_year', (req, res) => { 
         var value = parseInt(req.query.year); console.log(value);
-        collection.find({award_year : {$gte : value}}).toArray(function(err, docs) {
+        collection.find({"awards": { $elemMatch: { year: { $gte: value } } }}).toArray(function(err, docs) {
             if(err)
             {
                 res.status(400).json(err);
@@ -42,18 +44,35 @@ const MongoClient = require('mongodb').MongoClient;
 
     app.get('/total_details', (req, res) => { 
         
-          collection.aggregate(
+      collection_book.aggregate(
             [
-              // First Stage
               {
-                $group :
+                "$lookup":
+                {  
+                  from: 'authors',  
+                  localField: 'authorId',  
+                  foreignField: '_id',  
+                  as: 'authors'
+                }
+              },
+              {
+                $group:
+                {
+                  _id:"$authorId",
+                  totalSold: 
+                  { 
+                    $sum: '$sold'  
+                  },
+                  totalProfit:
                   {
-                    _id : "$author_name",
-              totalBookSold: { $sum: "$books_sold"},
-                    totalProfit: { $sum: { $multiply: [ "$books_sold", "$price" ] } }
+                    $sum:
+                    {
+                      $multiply:["$price","$sold"]
+                    }
                   }
-               }
-             ]
+                }
+              }
+            ]
            ).toArray(function(err, docs) {
             if(err)
             {
@@ -71,14 +90,42 @@ const MongoClient = require('mongodb').MongoClient;
         var bdate = dateObj.toISOString(); 
         var price = parseInt(req.query.price);
         
-        collection.find({
-            birthdate: {
-                $gte: new Date(bdate)
-            },
-            price: {
-                $gte: price
+        collection.aggregate([
+          {
+            $match:
+            {
+              birth: { $gte: new Date(bdate)}
             }
-        }).toArray(function(err, docs) {
+          },
+          {
+            $lookup:
+            {  
+              from: 'books',  
+              localField: '_id',  
+              foreignField: 'authorId',  
+              as: 'books'
+            }
+          },
+          { 
+            $unwind: "$books" 
+          },
+          {
+            $group:
+            {
+              _id:"$books.authorId",
+              totalPrice:
+              {
+                $sum:"$books.price"
+              }
+            }
+          },
+              {
+            $match:
+            {
+              totalPrice: { $gte: price}
+            }
+          }
+          ]).toArray(function(err, docs) {
           if(err)
           {
               res.status(400).json(err);

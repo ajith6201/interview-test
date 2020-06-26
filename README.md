@@ -1,51 +1,103 @@
 # interview-test
 
 # Query & Api’s
-Task -1
+
+
+**Task -1**
 
 query - 
-db.collection.find({awards : {$gte : 26}})
 
-URL - /awards?awards=40
+db.authors.find( {awards : {$exists:true}, $where:'this.awards.length>=4'} ).pretty();
 
-Task -2 
+URL - localhost:3000/awards?awards=4
 
-query - 
-db.collection.find({year : {$gte : 26}})
-
-URL - /award_year?year=2003
-
-Task – 3
+**Task -2**
 
 query - 
-db.collection.aggregate(
-[
-// First Stage
-{
-$group :
-{
-_id : "$author_name",
-totalBookSold: { $sum: "$books_sold"},
-totalProfit: { $sum: { $multiply: [ "$books_sold", "$price" ] } }
-}
-}
-]
-)
 
-URL - /total_details
+db.authors.find( { "awards": { $elemMatch: { year: { $gte: 2011 } } } } ).pretty();
 
+URL - localhost:3000/award_year?year=1998
 
-Task - 4
+**Task – 3**
+
 query - 
-db.collection.find({
-    "birthdate": {
-        "$gte":  ISODate("1991-06-17T00:00:00Z") 
+
+db.books.aggregate(
+    [
+        {
+        "$lookup":
+        {  
+            from: 'authors',  
+            localField: 'authorId',  
+            foreignField: '_id',  
+            as: 'authors'
+        }
+        },
+        {
+        $group:
+        {
+            _id:"$authorId",
+            totalSold: 
+            { 
+            $sum: '$sold'  
+            },
+            totalProfit:
+            {
+            $sum:
+            {
+                $multiply:["$price","$sold"]
+            }
+            }
+        }
+        }
+    ]
+    ).pretty();
+
+URL - localhost:3000/total_details
+
+
+**Task - 4**
+
+query - 
+
+db.authors.aggregate([
+    {
+      $match:
+      {
+        birth: { $gte: ISODate('1906-12-09T05:00:00.000Z')}
+      }
     },
-    "price": {
-        "$gte": 1000
+    {
+      $lookup:
+      {  
+        from: 'books',  
+        localField: '_id',  
+        foreignField: 'authorId',  
+        as: 'books'
+      }
+    },
+    { 
+      $unwind: "$books" 
+    },
+    {
+      $group:
+      {
+        _id:"$books.authorId",
+        totalPrice:
+        {
+          $sum:"$books.price"
+        }
+      }
+    },
+        {
+      $match:
+      {
+        totalPrice: { $gte: 7000}
+      }
     }
-});
+    ]).pretty();
 
-URL - /birthdate?date=1991-12-09T05:00:00.000Z&price=3000
+URL - localhost:3000/birthdate?date=1906-12-09T05:00:00.000Z&price=5000
 
 

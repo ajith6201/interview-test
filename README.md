@@ -101,3 +101,12 @@ db.authors.aggregate([
 URL - localhost:3000/birthdate?date=1906-12-09T05:00:00.000Z&price=5000
 
 
+***************************************************************************************************************************
+# Project Setup
+
+**git clone**
+
+**npm install**
+
+**node server.js**
+
